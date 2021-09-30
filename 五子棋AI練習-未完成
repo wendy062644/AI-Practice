@@ -1,0 +1,84 @@
+#include<bits/stdc++.h>
+using namespace std;
+int game[16][16] = {0};
+int way[8][2] = {{1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}, {0, 1}, {1, 1}}; //判斷周圍棋子 
+int point[8] = {10, 50, 100, 500, 1000, 5000, 10000, 50000};
+int end = 0;
+
+move(int x, int y){
+	int max = 0;
+	for(int a = 0; 4 > a; a++)
+	{
+		for(int b = 0; 5 > b; b++)
+		{
+			int n = 5, tt = 0;
+			for(int c = 1; 5 > c; c++)
+			{
+				tt = 0;
+				int m = n - c;
+				int x1 = x, y1 = y;
+				for(int d = 0; c > d; d++){if(x1+way[a][0] > 0&&x1+way[a][0] < 16&&y1+way[a][1] > 0&&y1+way[a][1] < 16){x1 += way[a][0]; y1 += way[a][1]; if(game[x1][y1] == 1){tt++;}}}
+				x1 = x; y1 = y;
+				for(int d = 0; m > d; d++){if(x1+way[a+4][0] > 0&&x1+way[a+4][0] < 16&&y1+way[a+4][1] > 0&&y1+way[a+4][1] < 16){x1 += way[a+4][0]; y1 += way[a+4][1]; if(game[x1][y1] == 1){tt++;}}}
+				if(tt > max){max = tt; cout << tt << endl;}
+			}
+		}
+	}
+	return max;
+}
+ai(){
+	int max = 0, n = 0, x, y;
+	for(int a = 1; 16 > a; a++)
+	{
+		for(int b = 1; 16 > b; b++)
+		{
+			for(int c = 0; 8 > c; c++)
+			{
+				if(game[b+way[c][0]][a+way[c][1]] != 0&&game[b][a] == 0){n = move(b, a);}
+				if(n > max){max = n; x = b; y = a;}
+			}
+		}
+	}
+	game[x][y] = 2;
+}
+
+int main(){
+	int x, y;
+		for(int a = 1; 16 > a; a++)
+		{
+			for(int b = 1; 16 > b; b++)
+			{
+				cout << game[b][a] << " ";
+			}
+			cout << endl;
+		}
+	while(1) //玩家為1，電腦為2 
+	{
+		cout << "請輸入座標" << endl; 
+		cin >> x >> y; //玩家下棋 
+		game[x][y] = 1;
+		
+		for(int a = 1; 16 > a; a++)
+		{
+			for(int b = 1; 16 > b; b++)
+			{
+				cout << game[b][a] << " ";
+			}
+			cout << endl;
+		}
+		cout << endl << endl;
+		
+		ai(); //電腦下棋 
+		
+		for(int a = 1; 16 > a; a++)
+		{
+			for(int b = 1; 16 > b; b++)
+			{
+				cout << game[b][a] << " ";
+			}
+			cout << endl;
+		}
+		
+		if(end == 1){break;}
+	}
+} 
